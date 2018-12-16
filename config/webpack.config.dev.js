@@ -17,6 +17,8 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -32,7 +34,9 @@ const env = getClientEnvironment(publicUrl);
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 const routeEntries = {
-    root: path.resolve(__dirname, '../src/js/App.js'),
+    root: path.resolve(__dirname, '../src/js/index.js'),
+    table: path.resolve(__dirname, '../src/js/components/List/List.js'),
+    form: path.resolve(__dirname, '../src/js/components/AddWorkerForm/AddWorkerForm.js'),
 };
 
 
@@ -47,7 +51,7 @@ const stylusModuleRegex = /\.module\.styl$/;
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
-    require.resolve('style-loader'),
+    MiniCssExtractPlugin.loader,
     {
       loader: require.resolve('css-loader'),
       options: cssOptions,
@@ -79,31 +83,14 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-// This is the development configuration.
-// It is focused on developer experience and fast rebuilds.
-// The production configuration is different and lives in a separate file.
 module.exports = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
-  entry: [
-    // Include an alternative client for WebpackDevServer. A client's job is to
-    // connect to WebpackDevServer by a socket and get notified about changes.
-    // When you save a file, the client will either apply hot updates (in case
-    // of CSS changes), or refresh the page (in case of JS changes). When you
-    // make a syntax error, this client will display a syntax error overlay.
-    // Note: instead of the default WebpackDevServer client, we use a custom one
-    // to bring better experience for Create React App users. You can replace
-    // the line below with these two lines if you prefer the stock client:
-    // require.resolve('webpack-dev-server/client') + '?/',
-    // require.resolve('webpack/hot/dev-server'),
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    // Finally, this is your app's code:
-    paths.appIndexJs,
-    routeEntries.root
-    // We include the app code last so that if there is a runtime error during
-    // initialization, it doesn't blow up the WebpackDevServer client, and
-    // changing JS code would still trigger a refresh.
-  ],
+  entry: {
+    main: [require.resolve('react-dev-utils/webpackHotDevClient'), routeEntries.root],
+    table: [require.resolve('react-dev-utils/webpackHotDevClient'), routeEntries.table],
+    form: [require.resolve('react-dev-utils/webpackHotDevClient'), routeEntries.form],
+  },
   output: {
     // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
@@ -125,11 +112,20 @@ module.exports = {
     // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
     splitChunks: {
       chunks: 'all',
-      name: false,
+      name: true,
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2
+        },
+        default: false,
+        vendors: false,
+      }
     },
     // Keep the runtime chunk seperated to enable long term caching
     // https://twitter.com/wSokra/status/969679223278505985
-    runtimeChunk: true,
+    runtimeChunk: false,
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -338,10 +334,18 @@ module.exports = {
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[name].css"
+    }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+      title: 'Meow',
+      chunks: ['commons', 'table']
     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:

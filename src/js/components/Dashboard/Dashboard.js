@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import './Dashboard.styl';
 import Intro from "../Intro/Intro";
 import DashboardContent from "../DashboardContent/DashboardContent";
-import {Route} from "react-router-dom";
-import AddWorkerForm from "../AddWorkerForm/AddWorkerForm";
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import { withRouter } from "react-router";
-import {compose} from "redux";
+import {bindActionCreators, compose} from "redux";
 import Loader from "../Loader/Loader";
+import actions from "../../reducers/actions";
 
 class Dashboard extends Component {
 
@@ -21,7 +19,7 @@ class Dashboard extends Component {
         this.getPage = this.getPage.bind(this);
     }
 
-    getPage(path, pages) {
+    getPage(path, pages = []) {
         return {
             ...pages.find((page) => page.path === path)
         };
@@ -36,7 +34,6 @@ class Dashboard extends Component {
 
 
     render() {
-        console.log('rerender');
         const PAGE = this.getPage(this.props.location.pathname, this.props.pages);
         return (
             <div className='dashboard'>
@@ -59,4 +56,14 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {};
 
-export default compose(connect(state => state,), withRouter)(Dashboard)
+function mapStateToProps(state) {
+    return { ...state  }
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+

@@ -30,7 +30,7 @@ class List extends Component {
                 </thead>
                 <tbody>
                     {this.props.workers.map ((worker) =>
-                        <ListItem worker={worker}/>
+                        <ListItem key={worker.id} worker={worker} editWorkerTime={this.props.actions.editWorkTime}/>
                     )}
                 </tbody>
             </table>

@@ -7,7 +7,7 @@ import {Query} from "../../services/RequestService";
 import "./AddWorkerForm.styl";
 import {withRouter} from "react-router-dom";
 
-class AddWorkerForm extends Component {
+export class AddWorkerForm extends Component {
 
     constructor(props) {
         super(props);
@@ -19,6 +19,7 @@ class AddWorkerForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleLoad = this.handleLoad.bind(this);
 
     }
 

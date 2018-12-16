@@ -6,12 +6,10 @@ export default {
             worker: worker
         }
     },
-    editWorkTime: function(item, newName, newPrice) {
+    editWorkTime: function(worker) {
         return {
             type: 'EDIT_WORK_TIME',
-            item: item,
-            newName: newName,
-            newPrice: newPrice
+            worker: worker,
         }
     },
     fireWorker: function(item) {

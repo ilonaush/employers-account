@@ -4,7 +4,11 @@ import List from "../List/List";
 import {Route} from "react-router-dom";
 import AddWorkerForm from "../AddWorkerForm/AddWorkerForm";
 
-class DashboardContent extends Component {
+export class DashboardContent extends Component {
+
+    dynamicImport (location) {
+
+    }
     render() {
         return (
             <div className='d-content'>

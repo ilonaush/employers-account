@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import "./ListItem.styl";
+import MaskedInput from 'react-text-mask'
 
 class ListItem extends Component {
      constructor(props) {
@@ -9,12 +10,13 @@ class ListItem extends Component {
              editing: false
          };
          this.editTime = this.editTime.bind(this);
+         this.handleChange = this.handleChange.bind(this);
+         this.saveTime = this.saveTime.bind(this);
      }
 
     editTime(id) {
-        console.log('clicked');
         this.setState({
-            editing: id
+            editing: true
         })
     }
 
@@ -24,14 +26,21 @@ class ListItem extends Component {
          })
     }
 
-    saveTime() {
-         this.setState({
-
-         })
+    saveTime({target}) {
+         const value = target.value;
+         console.log(value);
+        this.setState({
+            [target.name]: target.value,
+            editing: false
+        });
+        const worker = {
+            ...this.props.worker,
+            [target.name]: target.value
+        };
+        this.props.editWorkerTime(worker);
     }
 
     render() {
-     console.log(this.props);
      const {editing } = this.state;
      const {worker: {fullname, position, arrival = '', leaving = ''} = {}} = this.props;
         return (
@@ -42,25 +51,29 @@ class ListItem extends Component {
                 <td>
                     {position}
                 </td>
-                <th id='arrival' onClick={(e) => this.editTime(e.target.id)} className='worker-time'>
-                    {arrival ? arrival :  editing === 'arrival' ?
-                        <input
+                <th id='arrival' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
+                    {arrival ? arrival :  editing  ?
+                        <MaskedInput
+                            mask={[/\d/,  /\d/, ':',  /\d/,  /\d/]}
                             className='time-input'
                             name='arrival'
+                            guide={true}
                             onChange={this.handleChange}
                             placeholder='  :  '
                         />
-                        :  'Not found. Click to fill in time of arrival'}
+                        :  'Click to select'}
                 </th>
-                <th id='leaving' onClick={(e) => this.editTime(e.target.id)} onBlur={this.saveTime} className='worker-time'>
-                    {leaving ? leaving :  editing === 'leaving' ?
-                        <input
+                <th id='leaving' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
+                    {leaving ? leaving : editing  ?
+                        <MaskedInput
+                            mask={[/\d/,  /\d/, ':', /\d/,  /\d/]}
                             className='time-input'
                             name='leaving'
+                            guide={true}
                             onChange={this.handleChange}
                             placeholder='  :  '
                         />
-                        : 'Not found. Click to fill in time of leaving'}
+                        : 'Click to select'}
                 </th>
             </tr>
         );

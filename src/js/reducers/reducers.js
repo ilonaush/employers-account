@@ -31,8 +31,21 @@ let reducer = (state = initialState, action) => {
                 ],
             };
         case 'EDIT_WORK_TIME':
+            const workers = [...state.workers].map((worker) => {
+                if (worker.id === action.worker.id) {
+                        return {
+                            ...action.worker
+                        }
+                    }
+                else {
+                    return worker;
+                }
+            });
             return {
-                ...state
+                ...state,
+                workers: [
+                    ...workers,
+                ],
             };
         case 'FIRE_WORKER':
             return {
@@ -40,7 +53,7 @@ let reducer = (state = initialState, action) => {
                 ...state.workers.filter((worker) => {
                 return worker.id !== action.worker.id
                 })
-            }
+            };
         default:
             return state;
     }
