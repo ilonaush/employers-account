@@ -9,6 +9,10 @@ const MENU_ITEMS = [
         to: '/add-worker'
     },
     {
+        name: 'Fire worker',
+        to: '/fire-worker'
+    },
+    {
         name: 'FAQ',
         to: '/'
     }

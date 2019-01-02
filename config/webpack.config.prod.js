@@ -23,22 +23,16 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 
-// Webpack uses `publicPath` to determine where the app is being served from.
-// It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = paths.servedPath;
-// Some apps do not use client-side routing with pushState.
-// For these, "homepage" can be set to "." to enable relative asset paths.
+
 const shouldUseRelativeAssetPaths = publicPath === './';
-// Source maps are resource heavy and can cause out of memory issue for large source files.
+
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-// Some apps do not need the benefits of saving a web request, so not inlining the chunk
-// makes for a smoother build process.
+
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
-// `publicUrl` is just like `publicPath`, but we will provide it to our app
-// as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
-// Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
+
 const publicUrl = publicPath.slice(0, -1);
-// Get environment variables to inject into our app.
+
 const env = getClientEnvironment(publicUrl);
 
 // Assert this just to be safe.
@@ -46,10 +40,6 @@ const env = getClientEnvironment(publicUrl);
 if (env.stringified['process.env'].NODE_ENV !== '"production"') {
   throw new Error('Production builds must have NODE_ENV=production.');
 }
-
-// Check if TypeScript is setup
-const useTypeScript = fs.existsSync(paths.appTsConfig);
-
 
 const routeEntries = {
     root: path.resolve(__dirname, '../src/index.js'),
@@ -63,7 +53,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 const stylusRegex = /\.styl$/;
 const stylusModuleRegex = /\.module\.styl$/;
 
-// common function to get style loaders
+
 const getStyleLoaders = (cssOptions, preProcessor) => {
   const loaders = [
     {
@@ -78,13 +68,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
       options: cssOptions,
     },
     {
-      // Options for PostCSS as we reference these options twice
-      // Adds vendor prefixing based on your specified browser support in
-      // package.json
+
       loader: require.resolve('postcss-loader'),
       options: {
-        // Necessary for external CSS imports to work
-        // https://github.com/facebook/create-react-app/issues/2677
         ident: 'postcss',
         plugins: () => [
           require('postcss-flexbugs-fixes'),
@@ -110,9 +96,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
   return loaders;
 };
 
-// This is the production configuration.
-// It compiles slowly and is focused on producing a fast and minimal bundle.
-// The development configuration is different and lives in a separate file.
+
 module.exports = {
   mode: 'production',
   // Don't attempt to continue if there are any errors.
@@ -125,16 +109,14 @@ module.exports = {
       index: routeEntries.root
   },
   output: {
-    // The build folder.
+
     path: paths.appBuild,
-    // Generated JS file names (with nested folders).
-    // There will be one main bundle, and one file per asynchronous chunk.
-    // We don't currently advertise code splitting but Webpack supports it.
+
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
-    // We inferred the "public path" (such as / or /my-project) from homepage.
+
     publicPath: publicPath,
-    // Point sourcemap entries to original disk location (format as URL on Windows)
+
     devtoolModuleFilenameTemplate: info =>
       path
         .relative(paths.appSrc, info.absoluteResourcePath)
@@ -189,8 +171,7 @@ module.exports = {
           parser: safePostCssParser,
           map: shouldUseSourceMap
             ? {
-                // `inline: false` forces the sourcemap to be output into a
-                // separate file
+
                 inline: false,
                 // `annotation: true` appends the sourceMappingURL to the end of
                 // the css file, helping the browser find the sourcemap

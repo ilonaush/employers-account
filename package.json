@@ -139,9 +139,6 @@
       "react-app",
       "@babel/preset-react",
       "@babel/env"
-    ],
-    "plugins": [
-      "babel-plugin-transform-class-properties"
     ]
   },
   "devDependencies": {

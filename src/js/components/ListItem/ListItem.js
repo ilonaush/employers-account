@@ -54,12 +54,12 @@ class ListItem extends Component {
                 <th id='arrival' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
                     {arrival ? arrival :  editing  ?
                         <MaskedInput
-                            mask={[/\d/,  /\d/, ':',  /\d/,  /\d/]}
+                            mask={[' ', /\d/,  /\d/, ':',  /\d/,  /\d/]}
                             className='time-input'
                             name='arrival'
                             guide={true}
                             onChange={this.handleChange}
-                            placeholder='  :  '
+                            placeholder='––:––'
                         />
                         :  'Click to select'}
                 </th>
@@ -71,7 +71,7 @@ class ListItem extends Component {
                             name='leaving'
                             guide={true}
                             onChange={this.handleChange}
-                            placeholder='  :  '
+                            placeholder='––:––'
                         />
                         : 'Click to select'}
                 </th>

@@ -14,6 +14,10 @@ const initialState = {
         {
             title: 'Add worker',
             path: '/add-worker'
+        },
+        {
+            title: 'Fire worker',
+            path: '/fire-worker'
         }
     ]
 };
