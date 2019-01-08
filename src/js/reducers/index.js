@@ -6,10 +6,14 @@ import  { saveStore, loadStore } from '../services/LocalStorageService';
 const predefinedStore = loadStore() || {};
 
 const store = createStore(
-    reducer
+    reducer,
+    predefinedStore
+
 );
 
-
+store.subscribe(() => {
+    saveStore(store)
+});
 
 export {
     store, predefinedStore

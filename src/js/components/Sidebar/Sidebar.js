@@ -10,7 +10,7 @@ class Sidebar extends Component {
     render() {
         return (
             <div className='sidebar'>
-                <h5>Dashboard</h5>
+                <Link to='/' className='heading'>Dashboard</Link>
                 <hr/>
                 <SidebarMenu />
             </div>

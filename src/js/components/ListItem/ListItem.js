@@ -7,31 +7,22 @@ class ListItem extends Component {
      constructor(props) {
          super(props);
          this.state = {
-             editing: false
+             editing: ''
          };
          this.editTime = this.editTime.bind(this);
-         this.handleChange = this.handleChange.bind(this);
+         // this.handleChange = this.handleChange.bind(this);
          this.saveTime = this.saveTime.bind(this);
      }
 
-    editTime(id) {
+    editTime(e) {
         this.setState({
-            editing: true
+            editing: e.currentTarget.id
         })
     }
 
-    handleChange({target}) {
-         this.setState({
-             [target.name]: target.value
-         })
-    }
-
     saveTime({target}) {
-         const value = target.value;
-         console.log(value);
         this.setState({
-            [target.name]: target.value,
-            editing: false
+            editing: ''
         });
         const worker = {
             ...this.props.worker,
@@ -41,7 +32,7 @@ class ListItem extends Component {
     }
 
     render() {
-     const {editing } = this.state;
+     const {editing} = this.state;
      const {worker: {fullname, position, arrival = '', leaving = ''} = {}} = this.props;
         return (
             <tr>
@@ -51,30 +42,28 @@ class ListItem extends Component {
                 <td>
                     {position}
                 </td>
-                <th id='arrival' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
-                    {arrival ? arrival :  editing  ?
-                        <MaskedInput
-                            mask={[' ', /\d/,  /\d/, ':',  /\d/,  /\d/]}
-                            className='time-input'
-                            name='arrival'
-                            guide={true}
-                            onChange={this.handleChange}
-                            placeholder='––:––'
-                        />
-                        :  'Click to select'}
-                </th>
-                <th id='leaving' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
-                    {leaving ? leaving : editing  ?
-                        <MaskedInput
-                            mask={[/\d/,  /\d/, ':', /\d/,  /\d/]}
-                            className='time-input'
-                            name='leaving'
-                            guide={true}
-                            onChange={this.handleChange}
-                            placeholder='––:––'
-                        />
-                        : 'Click to select'}
-                </th>
+                <td id='arrival' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
+                    {editing === 'arrival' ? <MaskedInput
+                        mask={[' ', /\d/,  /\d/, ':',  /\d/,  /\d/]}
+                        className='time-input'
+                        name='arrival'
+                        guide={true}
+                        // onChange={this.handleChange}
+                        placeholder='––:––'
+                    />
+                    : arrival ? arrival : 'Click to select'}
+                </td>
+                <td id='leaving' onClick={this.editTime} onBlur={this.saveTime} className='worker-time'>
+                    {editing === 'leaving' ? <MaskedInput
+                        mask={[' ', /\d/,  /\d/, ':',  /\d/,  /\d/]}
+                        className='time-input'
+                        name='leaving'
+                        guide={true}
+                        // onChange={this.handleChange}
+                        placeholder='––:––'
+                    />
+                    : leaving ? leaving : 'Click to select'}
+                </td>
             </tr>
         );
     }

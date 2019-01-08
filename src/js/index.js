@@ -5,7 +5,6 @@ import { BrowserRouter, Route} from 'react-router-dom';
 import {PATHS} from "./routes/paths";
 import "./index.styl";
 
-console.log('entered');
 ReactDOM.render(<BrowserRouter><Route {...PATHS.root}/></BrowserRouter>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

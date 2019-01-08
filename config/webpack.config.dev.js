@@ -33,6 +33,7 @@ const routeEntries = {
     table: path.resolve(__dirname, '../src/js/components/List/List.js'),
     addForm: path.resolve(__dirname, '../src/js/components/AddWorkerForm/AddWorkerForm.js'),
     fireForm: path.resolve(__dirname, '../src/js/components/FireWorkerForm/FireWorkerForm.js'),
+    gallery: path.resolve(__dirname, '../src/js/components/Gallery/Gallery.js'),
 };
 
 
@@ -113,6 +114,7 @@ module.exports = {
         paths.appJs,
         paths.appFonts,
         paths.appComponents,
+        paths.appImages,
         'node_modules'].concat(
 
       process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
@@ -126,7 +128,8 @@ module.exports = {
       'react-native': 'react-native-web',
       'js' : paths.appJs,
       'fonts': paths.appFonts,
-      'components': paths.appComponents
+      'components': paths.appComponents,
+      'images': paths.appImages
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -173,7 +176,7 @@ module.exports = {
         oneOf: [
 
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/ ],
             loader: require.resolve('url-loader'),
             options: {
               limit: 10000,

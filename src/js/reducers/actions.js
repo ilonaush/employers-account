@@ -1,21 +1,20 @@
 export default {
-    employWorker: function(worker) {
-        debugger;
+    employWorker: function (worker) {
         return {
             type: 'EMPLOY_WORKER',
             worker: worker
         }
     },
-    editWorkTime: function(worker) {
+    editWorkTime: function (worker) {
         return {
             type: 'EDIT_WORK_TIME',
             worker: worker,
         }
     },
-    fireWorker: function(item) {
+    fireWorker: function (workerId) {
         return {
             type: 'FIRE_WORKER',
-            item: item
+            id: workerId
         }
     }
 };

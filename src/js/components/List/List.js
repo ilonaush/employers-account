@@ -5,12 +5,14 @@ import {bindActionCreators} from "redux";
 import actions from "../../reducers/actions";
 import {connect} from "react-redux";
 import ListItem from "../ListItem/ListItem";
+import {Link} from "react-router-dom";
 
 class List extends Component {
 
 
     render() {
         return (
+            this.props.workers && this.props.workers.length ?
             <table>
                 <thead>
                     <tr>
@@ -29,11 +31,11 @@ class List extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.workers.map ((worker) =>
-                        <ListItem key={worker.id} worker={worker} editWorkerTime={this.props.actions.editWorkTime}/>
-                    )}
+                {this.props.workers.map ((worker) =>
+                    <ListItem key={worker.id} worker={worker} editWorkerTime={this.props.actions.editWorkTime}/>
+                 )}
                 </tbody>
-            </table>
+            </table> : <Link to='/add-worker'>Add worker</Link>
         );
     }
 }

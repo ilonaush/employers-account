@@ -1,11 +1,5 @@
 const initialState = {
-    workers: [
-        {
-            id: 1,
-            fullname: 'Vasyl Marko',
-            position: 'Manager'
-        }
-    ],
+    workers: [],
     pages: [
         {
             title: 'Table',
@@ -18,6 +12,9 @@ const initialState = {
         {
             title: 'Fire worker',
             path: '/fire-worker'
+        }, {
+            title: 'Gallery',
+            path: '/gallery'
         }
     ]
 };
@@ -31,7 +28,7 @@ let reducer = (state = initialState, action) => {
                 ...state,
                 workers: [
                     ...state.workers,
-                    {...action.worker}
+                    action.worker
                 ],
             };
         case 'EDIT_WORK_TIME':
@@ -52,11 +49,15 @@ let reducer = (state = initialState, action) => {
                 ],
             };
         case 'FIRE_WORKER':
+            console.log(state.workers.filter((worker) => {
+                console.log(worker.id, parseInt(action.id));
+                return worker.id !== parseInt(action.id)
+            }))
             return {
                 ...state,
-                ...state.workers.filter((worker) => {
-                return worker.id !== action.worker.id
-                })
+                workers: [...state.workers.filter((worker) => {
+                    return worker.id !== parseInt(action.id)
+            })]
             };
         default:
             return state;

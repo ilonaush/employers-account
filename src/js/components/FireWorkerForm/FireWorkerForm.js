@@ -12,29 +12,30 @@ export class FireWorkerForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            surname: '',
-            position: '',
+           worker: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
         this.handleLoad = this.handleLoad.bind(this);
 
     }
 
     onSubmit(e) {
         e.preventDefault();
-        const worker = {
-            fullname: `${this.state.name} ${this.state.surname}`,
-            position: this.state.position,
-            id: Date.now()
-        };
+        debugger;
 
-        this.props.actions.employWorker(worker);
+        this.props.actions.fireWorker(this.state.worker);
         const response = this.handleLoad();
+    }
 
-
+    handleSelect({target = null}) {
+        debugger;
+        console.log(target.value);
+        this.setState({
+            worker: target.value
+        })
     }
 
     async handleLoad() {
@@ -46,23 +47,18 @@ export class FireWorkerForm extends Component {
         }
     }
 
-    handleChange(value, name) {
-        this.setState({
-            [name]: value
-        })
-    }
-
     render() {
         return (
             <div>
                 <form className='addWorkerForm'>
-                    <select>
+                    <select onChange={this.handleSelect}>
+                        <option value=" ">Оберіть</option>
                         {this.props.workers.map((worker) =>
-                            <option value={worker.id} onClick={() => this.props.fireWorker(worker)}>{worker.surname}</option>
+                            <option value={worker.id} >{worker.fullname}</option>
                         )}
                     </select>
                     <textarea placeholder='Describe reason please'/>
-                    <button type='submit' onClick={this.onSubmit}>Employ a worker</button>
+                    <button type='submit' onClick={this.onSubmit}>Fire a worker</button>
                 </form>
             </div>
         );

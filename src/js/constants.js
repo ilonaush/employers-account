@@ -2,19 +2,23 @@
 const MENU_ITEMS = [
     {
         name: 'Home',
-        to: '/'
+        to: '/',
+        icon: 'list'
     },
     {
         name: 'Add a worker',
-        to: '/add-worker'
+        to: '/add-worker',
+        icon: 'add'
     },
     {
         name: 'Fire worker',
-        to: '/fire-worker'
+        to: '/fire-worker',
+        icon: 'fire'
     },
     {
-        name: 'FAQ',
-        to: '/'
+        name: 'Gallery',
+        to: '/gallery',
+        icon: 'gallery'
     }
 ];
 
